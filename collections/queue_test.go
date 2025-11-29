@@ -1,37 +1,46 @@
 package collections
 
 import (
+	"errors"
 	"testing"
 )
 
 func TestNew(t *testing.T){
 	q := New[int]()
-	if q == nil{
-		t.Fatalf("expected : %v , got : %v\n",&Queue[any]{}, q)
-	}
-	if q.items == nil{
-		t.Fatalf("expected : %v , got : %v\n",[]any{}, q.items)	
-	}
-	if q.head != -1{
-		t.Fatalf("expected : -1, got : %v\n",q.head)
-	}
+	assert(t, q == nil, "queue", q)
+	
 }
 
 
 func TestEnqueue(t *testing.T){
 	q := New[int]()
-	for i := range 10{
+	q.Enqueue(1)
+	v, er := q.Dequeue()
+	assert(t, er != nil, nil, er)
+	assert(t, v != 1, 1, v)
+	q.Enqueue(1)
+	v, er = q.Dequeue()
+	assert(t, er != nil, nil, er)
+	assert(t, v != 1, 1, v)
+	_, er = q.Dequeue()
+	assert(t, er == nil, nil, errors.New(""))
+
+	for i := range 12{
 		q.Enqueue(i+1)
 	}
-
-	assert(t, len(q.items) != 10, 10, len(q.items))
-
-	for range 5{
+	for range 8{
 		q.Dequeue()
 	}
-	for i := range 7{
-		q.Enqueue(i + 20)
+	for i := range 12{
+		q.Enqueue(i+20)
 	}
+	for range 15{
+		q.Dequeue()
+	}
+	v, _ = q.Dequeue()
+	assert(t, v != 31, 31, v)
+	_, err := q.Dequeue()
+	assert(t, err == nil, errors.New(""), err)
 }
 
 
