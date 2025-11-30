@@ -48,19 +48,18 @@ func (q *Queue[T])Enqueue(d T){
 }
 
 func (q *Queue[T])Dequeue() (T, error){
+	v, err := q.Peek()
+	if err == nil{
+		q.head++
+	}
+	return v,err
+}
+
+func (q *Queue[T])Peek()(T, error){
 	if q.head <= q.tail{
 		d := q.items[q.head]
-		q.head++
 		return d, nil
 	}
 	var z T
 	return z, errors.New("no elements in queue")
-}
-
-func (q *Queue[T])Peek()(T, error){
-	if q.head == q.tail{
-		var z T
-		return z, errors.New("no elements in queue")
-	}
-	return q.items[q.tail], nil
 }
